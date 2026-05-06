@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mise En Prise</title>
+<meta name="description" content="A voice-first cooking companion for diaspora kitchens and anxious beginners. Cook until it becomes instinct." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Mise signature palette */
+    --crimson: #7a0a1e;
+    --crimson-warm: #8a142a;
+    --deep: #4a0010;
+    --char-red: #2a0008;
+    --rescue: #480008;
+    --blush: #F5C6C6;
+    --blush-warm: #f2c4bc;
+    --accent: #e8584a;
+    --accent-deep: #c43d2e;
+    --warm-white: #fff8f6;
+
+    /* Functional */
+    --paper: var(--crimson);
+    --ink: var(--blush);
+    --ink-soft: rgba(245, 198, 198, 0.72);
+    --ink-faint: rgba(245, 198, 198, 0.48);
+    --rule: rgba(245, 198, 198, 0.18);
+    --card: var(--deep);
+    --card-soft: rgba(74, 0, 16, 0.65);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 400;
+    background-color: var(--crimson);
+    color: var(--blush);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(232, 88, 74, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(74, 0, 16, 0.4) 0%, transparent 55%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.78 0 0 0 0 0.78 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-variation-settings: "SOFT" 50, "opsz" 144;
+    color: var(--blush);
+  }
+
+  .display {
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    font-style: italic;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 0 1.5rem; }
+  }
+
+  section { position: relative; }
+
+  /* Top nav */
+  nav.top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(42, 0, 8, 0.78);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  nav.top .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--blush);
+  }
+
+  .logo .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: 2px;
+    margin-bottom: 2px;
+    vertical-align: middle;
+  }
+
+  nav.top ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  nav.top a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav.top a:hover { color: var(--accent); }
+
+  @media (max-width: 720px) {
+    nav.top ul { display: none; }
+    nav.top .inner { padding: 1rem 1.5rem; }
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: end;
+    padding: 7rem 0 4rem;
+    gap: 4rem;
+    position: relative;
+  }
+
+  .hero-text { padding-bottom: 2rem; }
+
+  .hero h1 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--blush);
+  }
+
+  .hero h1 em.instinct {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .hero h1 em.instinct::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -0.05em;
+    height: 4px;
+    background: var(--accent);
+    opacity: 0.25;
+    border-radius: 1px;
+  }
+
+  .hero p.lede {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.5;
+    max-width: 30em;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: 'Newsreader', serif;
+    font-weight: 300;
+  }
+
+  .hero .meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    border-left: 2px solid var(--accent);
+    padding-left: 0.85rem;
+  }
+
+  .meta-item .num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--blush);
+  }
+
+  .meta-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-faint);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* Counter panel */
+  .counter-panel {
+    background: var(--deep);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    border-radius: 2px;
+    position: relative;
+    transform: rotate(0.4deg);
+    box-shadow: -3px 4px 0 var(--char-red), -3px 4px 0 1px var(--rule);
+  }
+
+  .counter-panel::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    width: 60px;
+    height: 22px;
+    background: rgba(232, 88, 74, 0.32);
+    transform: rotate(-2deg);
+    border-radius: 1px;
+  }
+
+  .counter-panel .eyebrow { display: block; margin-bottom: 1rem; }
+
+  .counter-big {
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--blush);
+    font-feature-settings: "tnum" on;
+  }
+  .counter-big .unit {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-left: 0.3rem;
+  }
+
+  .counter-panel p {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 6rem;
+    }
+    .counter-panel { max-width: 320px; }
+  }
+
+  /* MARQUEE band */
+  .band {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.2rem 0;
+    overflow: hidden;
+    background: var(--char-red);
+    color: var(--blush);
+  }
+
+  .marquee {
+    display: flex;
+    gap: 4rem;
+    white-space: nowrap;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    font-weight: 300;
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee span { display: inline-flex; align-items: center; gap: 4rem; }
+  .marquee .sep {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION HEADERS */
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    padding: 7rem 0 3rem;
+    align-items: end;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 4rem;
+  }
+
+  .section-head .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 6rem;
+    line-height: 0.9;
+    color: var(--accent);
+  }
+
+  .section-head h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .section-head .desc {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+    max-width: 32em;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 720px) {
+    .section-head {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 5rem 0 2rem;
+    }
+    .section-head .num { font-size: 4rem; }
+  }
+
+  /* CHEF */
+  #chef { padding-bottom: 6rem; }
+
+  .session {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .phone-frame {
+    background: #100002;
+    border-radius: 36px;
+    padding: 8px;
+    box-shadow:
+      0 30px 60px -20px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(0,0,0,0.4),
+      inset 0 0 0 2px rgba(245, 198, 198, 0.08);
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .phone-screen {
+    background: var(--deep);
+    border-radius: 28px;
+    padding: 1.5rem 1.25rem 2rem;
+    min-height: 720px;
+    position: relative;
+    overflow: hidden;
+    color: var(--blush);
+  }
+
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    width: 90px; height: 22px;
+    background: #050001;
+    border-radius: 14px;
+    z-index: 5;
+  }
+
+  .chef-status {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+  }
+  .chef-status .pulse-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(232, 88, 74, 0.6);
+    animation: chefPulse 2s infinite;
+  }
+  @keyframes chefPulse {
+    0% { box-shadow: 0 0 0 0 rgba(232, 88, 74, 0.6); }
+    70% { box-shadow: 0 0 0 12px rgba(232, 88, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(232, 88, 74, 0); }
+  }
+  .chef-status .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  .recipe-progress {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.85rem 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .recipe-progress .name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--blush);
+  }
+  .recipe-progress .step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .chef-q {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.65rem;
+    line-height: 1.25;
+    margin: 1.25rem 0;
+    color: var(--blush);
+  }
+
+  .chef-q::before {
+    content: '"';
+    font-size: 4rem;
+    line-height: 0.5;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'Fraunces', serif;
+  }
+
+  .chef-meta {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .waveform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 70px;
+    margin: 2rem 0;
+  }
+
+  .waveform .bar {
+    width: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .waveform .bar:nth-child(1) { animation-delay: 0.0s; height: 18px; }
+  .waveform .bar:nth-child(2) { animation-delay: 0.1s; height: 32px; }
+  .waveform .bar:nth-child(3) { animation-delay: 0.2s; height: 50px; }
+  .waveform .bar:nth-child(4) { animation-delay: 0.3s; height: 64px; }
+  .waveform .bar:nth-child(5) { animation-delay: 0.4s; height: 50px; }
+  .waveform .bar:nth-child(6) { animation-delay: 0.5s; height: 70px; }
+  .waveform .bar:nth-child(7) { animation-delay: 0.6s; height: 42px; }
+  .waveform .bar:nth-child(8) { animation-delay: 0.5s; height: 58px; }
+  .waveform .bar:nth-child(9) { animation-delay: 0.4s; height: 30px; }
+  .waveform .bar:nth-child(10) { animation-delay: 0.3s; height: 48px; }
+  .waveform .bar:nth-child(11) { animation-delay: 0.2s; height: 22px; }
+  .waveform .bar:nth-child(12) { animation-delay: 0.1s; height: 36px; }
+  .waveform .bar:nth-child(13) { animation-delay: 0.0s; height: 20px; }
+
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+
+  .audio-tag {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .audio-tag .green { color: var(--accent); }
+
+  .step-actions {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .step-action {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .step-action:last-child { border-bottom: none; }
+  .step-action .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    background: var(--char-red);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    color: var(--blush);
+    letter-spacing: 0.1em;
+  }
+
+  .annotations {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    padding-top: 2rem;
+    align-self: stretch;
+  }
+
+  .anno {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25rem;
+  }
+  .anno .eyebrow { display: block; margin-bottom: 0.4rem; }
+  .anno h4 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--blush);
+  }
+  .anno p {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 900px) {
+    .session { grid-template-columns: 1fr; }
+  }
+
+  /* RESCUE MODE */
+  #rescue {
+    background: var(--rescue);
+    color: var(--blush);
+    margin-top: 4rem;
+    padding-bottom: 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #rescue::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 30%, rgba(232, 88, 74, 0.12), transparent 50%);
+    pointer-events: none;
+  }
+
+  #rescue .section-head { border-bottom: 1px solid rgba(245, 198, 198, 0.15); }
+  #rescue .section-head h2 { color: var(--blush); }
+  #rescue .section-head .desc { color: rgba(245, 198, 198, 0.72); }
+  #rescue .section-head .num { color: var(--accent); }
+
+  .rescue-card {
+    background: linear-gradient(135deg, #2a0008 0%, #150004 100%);
+    border: 1px solid rgba(232, 88, 74, 0.25);
+    border-radius: 4px;
+    padding: 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+
+  .rescue-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(232, 88, 74, 0.18), transparent 60%);
+    pointer-events: none;
+  }
+
+  .rescue-alert {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .rescue-alert .blink {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+  }
+  @keyframes blink {
+    0%, 60% { opacity: 1; }
+    61%, 100% { opacity: 0.2; }
+  }
+
+  .rescue-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    max-width: 18em;
+    color: var(--blush);
+  }
+
+  .rescue-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(245, 198, 198, 0.12);
+  }
+
+  .rescue-step .step-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+    font-weight: 300;
+  }
+
+  .rescue-step h4 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    color: var(--blush);
+  }
+
+  .rescue-step p {
+    color: rgba(245, 198, 198, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 720px) {
+    .rescue-card { padding: 2rem 1.5rem; }
+    .rescue-steps { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+
+  /* BURN BOOK */
+  #burnbook { padding-bottom: 7rem; }
+
+  .journal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .entry {
+    background: var(--deep);
+    padding: 2rem 2.25rem;
+    border-radius: 2px;
+    position: relative;
+    box-shadow:
+      1px 2px 0 var(--char-red),
+      2px 4px 0 rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(245, 198, 198, 0.08);
+  }
+
+  .entry:nth-child(1) { transform: rotate(-0.6deg); }
+  .entry:nth-child(2) { transform: rotate(0.4deg); margin-top: 1.5rem; }
+  .entry:nth-child(3) { transform: rotate(0.5deg); }
+  .entry:nth-child(4) { transform: rotate(-0.3deg); margin-top: 1.5rem; }
+
+  .entry:hover { transform: rotate(0deg); }
+
+  .entry-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .entry-date {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+
+  .entry-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .entry h4 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--blush);
+  }
+
+  .entry p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+  }
+
+  .entry .lesson {
+    border-top: 1px dashed var(--rule);
+    padding-top: 0.85rem;
+    margin-top: 1rem;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+  .entry .lesson::before {
+    content: '→ ';
+    color: var(--accent);
+  }
+
+  @media (max-width: 720px) {
+    .journal { grid-template-columns: 1fr; }
+    .entry { transform: rotate(0) !important; }
+  }
+
+  /* ACOUSTIC */
+  #acoustic {
+    background: var(--deep);
+    padding-bottom: 6rem;
+    margin-bottom: 0;
+  }
+
+  .acoustic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 2rem;
+    align-items: center;
+  }
+
+  .sounds {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .sound-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sound-row:last-child { border-bottom: none; }
+
+  .sound-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--blush);
+  }
+
+  .sound-meaning {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .sound-meaning strong {
+    color: var(--accent);
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .acoustic-copy h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: var(--blush);
+  }
+
+  .acoustic-copy p {
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .acoustic-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  /* MANIFESTO */
+  #manifesto {
+    padding: 8rem 0 6rem;
+    text-align: center;
+    background: var(--crimson);
+    position: relative;
+  }
+
+  #manifesto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(232, 88, 74, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  #manifesto .container { position: relative; z-index: 1; }
+
+  #manifesto .eyebrow { margin-bottom: 1.5rem; display: inline-block; }
+
+  .manifesto-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 18em;
+    margin: 0 auto;
+    color: var(--blush);
+  }
+
+  .manifesto-text .accent { color: var(--accent); }
+
+  .manifesto-sub {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin-top: 2rem;
+    max-width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: italic;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 4rem 0 2.5rem;
+    background: var(--char-red);
+    color: var(--blush);
+  }
+
+  footer .container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  footer h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 198, 198, 0.5);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  footer p, footer a {
+    color: rgba(245, 198, 198, 0.85);
+    font-size: 0.95rem;
+    text-decoration: none;
+    line-height: 1.6;
+  }
+
+  footer .brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--blush);
+    margin-bottom: 1rem;
+    font-weight: 300;
+  }
+
+  footer .brand .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: 4px;
+    margin-bottom: 4px;
+    vertical-align: middle;
+  }
+
+  footer ul { list-style: none; }
+  footer ul li { margin-bottom: 0.45rem; }
+
+  footer .bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(245, 198, 198, 0.12);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(245, 198, 198, 0.45);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 720px) {
+    footer .container { grid-template-columns: 1fr; }
+    footer .bottom { flex-direction: column; gap: 0.5rem; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <div class="logo">mise en prise<span class="dot"></span></div>
+    <ul>
+      <li><a href="#chef">Chef</a></li>
+      <li><a href="#rescue">Rescue Mode</a></li>
+      <li><a href="#burnbook">Burn Book</a></li>
+      <li><a href="#acoustic">Acoustic Intel</a></li>
+      <li><a href="#manifesto">Manifesto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero container">
+  <div class="hero-text">
+    <span class="eyebrow">A cooking app · for the everyday chefs</span>
+    <h1 class="display">
+      <span>Cook until it</span><br>
+      <span>becomes <em class="instinct">instinct</em>.</span>
+    </h1>
+    <p class="lede">
+      Most cooking apps want to live on your home screen forever. Mise wants
+      you to graduate. We're a voice-first kitchen companion for the cooks
+      between two cuisines, and the beginners who'd rather not burn anything.
+    </p>
+    <div class="meta">
+      <div class="meta-item">
+        <div class="num">Voice-first</div>
+        <span class="label">Hands stay messy</span>
+      </div>
+      <div class="meta-item">
+        <div class="num">Socratic</div>
+        <span class="label">Asks, doesn't tell</span>
+      </div>
+      <div class="meta-item">
+        <div class="num">Forgiving</div>
+        <span class="label">Catches mistakes early</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="counter-panel">
+    <span class="eyebrow">Days until you delete me</span>
+    <div class="counter-big" id="counter">47<span class="unit">days</span></div>
+    <p>
+      We measure success by your independence, not your engagement. Your
+      counter ticks down as you stop checking the app mid-step.
+    </p>
+  </aside>
+</section>
+
+<!-- MARQUEE BAND -->
+<section class="band">
+  <div class="marquee">
+    <span>No streaks <span class="sep"></span> No badges <span class="sep"></span> No "you've used Mise 47 days in a row" <span class="sep"></span> Just dinner <span class="sep"></span> Then again <span class="sep"></span></span>
+    <span>No more feeling like cooking is impossible <span class="sep"></span> Chat with Chef <span class="sep"></span> Understand your ingredients <span class="sep"></span> Sizzle, Sear, Serve <span class="sep"></span> Then again <span class="sep"></span></span>
+  </div>
+</section>
+
+<!-- CHEF -->
+<section id="chef" class="container">
+  <div class="section-head reveal">
+    <div>
+      <span class="eyebrow">№ 01</span>
+      <div class="num">Chef</div>
+    </div>
+    <div>
+      <h2>A voice that asks the right question, instead of telling you what to do.</h2>
+      <p class="desc">
+        Recipe apps treat every cook like a beginner. Chef adapts. If you
+        already know how to temper mustard seeds, it gets out of your way. If
+        you don't, it asks what you're seeing and listens. 
+      </p>
+    </div>
+  </div>
+
+  <div class="session reveal">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="chef-status">
+          <span class="pulse-dot"></span>
+          <span class="label">Chef is listening</span>
+        </div>
+
+        <div class="recipe-progress">
+          <span class="name">Onion masala</span>
+          <span class="step">STEP 03 / 07</span>
+        </div>
+
+        <div class="chef-q">What's the smell telling you?</div>
+        <div class="chef-meta">— before I tell you when to add the tomato</div>
+
+        <div class="waveform">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <div class="audio-tag">Listening · <span class="green">sizzle detected · medium heat</span></div>
+
+        <div class="step-actions">
+          <div class="step-action">
+            <span class="key">SAY</span>
+            <span>"It smells sweet now."</span>
+          </div>
+          <div class="step-action">
+            <span class="key">SAY</span>
+            <span>"Still kind of raw."</span>
+          </div>
+          <div class="step-action">
+            <span class="key">SAY</span>
+            <span>"Skip ahead, I've got this."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="annotations">
+      <div class="anno">
+        <span class="eyebrow">Socratic dialogue</span>
+        <h4>Asks first, instructs after.</h4>
+        <p>Chef teaches by drawing on your senses, not overriding them. Every step ends with a question, not a deadline.</p>
+      </div>
+      <div class="anno">
+        <span class="eyebrow">Skill calibration</span>
+        <h4>Skip what you know.</h4>
+        <p>Tell Chef once that you grew up watching your nani make curry. It won't explain blending sautéed vegetables to you for the rest of your life.</p>
+      </div>
+      <div class="anno">
+        <span class="eyebrow">Hands-free</span>
+        <h4>Your hands stay in the dough.</h4>
+        <p>No tapping, no swiping, no accidentally smearing flour on the screen. Voice in, voice out.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESCUE -->
+<section id="rescue">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow" style="color: var(--accent);">№ 02</span>
+        <div class="num">Rescue Mode</div>
+      </div>
+      <div>
+        <h2>Triggered the moment something starts going wrong.</h2>
+        <p class="desc">
+          Acoustic Intelligence picks up the sound of oil getting too hot, a
+          pan scorching, a pot boiling over. Rescue Mode interrupts the recipe
+          and walks you out of the danger zone, without judgment.
+        </p>
+      </div>
+    </div>
+
+    <div class="rescue-card reveal">
+      <div class="rescue-alert">
+        <span class="blink"></span>
+        <span>Rescue mode · activated 0.4s ago</span>
+      </div>
+      <h3>Your onions are darkening fast. Pull the pan off the heat.</h3>
+      <p style="color: rgba(245, 198, 198, 0.7); max-width: 36em; line-height: 1.55;">
+        It's okay, this is salvageable. Three quick moves and we resume the
+        recipe from where we left off. No starting over.
+      </p>
+
+      <div class="rescue-steps">
+        <div class="rescue-step">
+          <div class="step-num">01</div>
+          <h4>Move the pan.</h4>
+          <p>Off the burner, onto a cool surface. Don't add water yet.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num">02</div>
+          <h4>Add a splash.</h4>
+          <p>One tablespoon of water. The hiss will stop the cooking instantly.</p>
+        </div>
+        <div class="rescue-step">
+          <div class="step-num">03</div>
+          <h4>Resume from step 04.</h4>
+          <p>You're back. Heat low this time. Chef will warn you sooner next round.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BURN BOOK -->
+<section id="burnbook" class="container">
+  <div class="section-head reveal">
+    <div>
+      <span class="eyebrow">№ 03</span>
+      <div class="num">Burn Book</div>
+    </div>
+    <div>
+      <h2>A journal of what went wrong, kept in your own voice.</h2>
+      <p class="desc">
+        The Burn Book is private. It's not a feed, it's not searchable by
+        anyone, and it's not used to train anything. It's the place where
+        your cooking memory actually lives — failures, fixes, the small
+        adjustments your grandmother would have made instinctively.
+      </p>
+    </div>
+  </div>
+
+  <div class="journal reveal">
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-date">Tuesday, 12 March</span>
+        <span class="entry-tag">Achaar</span>
+      </div>
+      <h4>Mustard seeds before oil.</h4>
+      <p>
+        Tried mom's mango pickle. Did the seeds first then poured hot oil over
+        — they didn't crackle, they just sat there looking sad. Texture went
+        flat. The whole jar tastes like raw mustard.
+      </p>
+      <div class="lesson">Next time: oil hot first. Then seeds. Then everything else.</div>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-date">Friday, 15 March</span>
+        <span class="entry-tag">Pasta</span>
+      </div>
+      <h4>"Al dente" is not a feeling.</h4>
+      <p>
+        I think I keep overcooking pasta because I taste it once, panic that
+        it's hard, and leave it for two more minutes. Two more minutes is
+        always too long.
+      </p>
+      <div class="lesson">Set a 9-minute timer. Don't taste. Trust the box.</div>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-date">Sunday, 24 March</span>
+        <span class="entry-tag">Daal</span>
+      </div>
+      <h4>Tadka should sound like rain.</h4>
+      <p>
+        Chef described the sound the curry leaves should make when they hit
+        the oil — "like the first three seconds of rain." Mine were silent. Oil
+        wasn't hot enough. Whole pot tasted like nothing.
+      </p>
+      <div class="lesson">Wait for the shimmer. Then count to ten. Then add.</div>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-date">Wednesday, 03 April</span>
+        <span class="entry-tag">Bread</span>
+      </div>
+      <h4>The dough wasn't proofing because the kitchen was 64°F.</h4>
+      <p>
+        Three hours, no rise. I assumed the yeast was dead. It wasn't — my
+        apartment was. Chef caught the room temperature when I asked about it
+        on the second hour. Lesson learned.
+      </p>
+      <div class="lesson">Cold kitchen → oven on lowest setting for 60 seconds, off, then proof inside.</div>
+    </article>
+  </div>
+</section>
+
+<!-- ACOUSTIC -->
+<section id="acoustic">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">№ 04</span>
+        <div class="num">Acoustic Intelligence</div>
+      </div>
+      <div>
+        <h2>The kitchen has a vocabulary. Mise speaks it.</h2>
+        <p class="desc">
+          Cooking is full of sounds that mean something specific — the rolling
+          boil, the sizzle of a properly heated pan, the silence of a flame
+          that just went out. Mise listens for them, so you don't have to keep
+          checking.
+        </p>
+      </div>
+    </div>
+
+    <div class="acoustic-grid reveal">
+      <div class="acoustic-copy">
+        <h3>Listening, not recording.</h3>
+        <p>
+          Audio is processed on-device and discarded the moment a sound is
+          classified. There's no transcript. There's no audio file saved to a
+          server. There's no model training on what your kitchen sounds like.
+        </p>
+        <p>
+          Designed to be deleted applies to your data too. Every cooking
+          session ends, and the data ends with it.
+        </p>
+      </div>
+
+      <div class="sounds">
+        <div class="sound-row">
+          <div class="sound-name">Rolling boil</div>
+          <div class="sound-meaning">Continuous low rumble · <strong>safe to walk away</strong></div>
+        </div>
+        <div class="sound-row">
+          <div class="sound-name">Hard sizzle</div>
+          <div class="sound-meaning">Sharp crackle, rising · <strong>oil too hot · turn down</strong></div>
+        </div>
+        <div class="sound-row">
+          <div class="sound-name">Wet hiss</div>
+          <div class="sound-meaning">Moisture hitting hot pan · <strong>good sear starting</strong></div>
+        </div>
+        <div class="sound-row">
+          <div class="sound-name">Silent simmer</div>
+          <div class="sound-meaning">No movement on the surface · <strong>flame likely out</strong></div>
+        </div>
+        <div class="sound-row">
+          <div class="sound-name">Pop &amp; crackle</div>
+          <div class="sound-meaning">Mustard or cumin seeds · <strong>tadka ready · add next</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="container">
+    <span class="eyebrow">The bargain</span>
+    <p class="manifesto-text">
+      Most apps measure your <span class="accent">dependence</span>.<br>
+      We measure your <span class="accent">independence</span>.
+    </p>
+    <p class="manifesto-sub">
+      The day you don't open Mise to make dinner — that's the day we did our job.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div>
+      <div class="brand">mise<span class="dot"></span></div>
+      <p style="max-width: 24em;">
+        A voice-first cooking companion for diaspora kitchens and anxious
+        beginners. Cook until it becomes instinct.
+      </p>
+    </div>
+    <div>
+      <h5>The App</h5>
+      <ul>
+        <li><a href="#chef">Chef</a></li>
+        <li><a href="#rescue">Rescue Mode</a></li>
+        <li><a href="#burnbook">Burn Book</a></li>
+        <li><a href="#acoustic">Acoustic Intelligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Made by</h5>
+      <ul>
+        <li>Tyra Minnal Vinay</li>
+        <li>Founder</li>
+        <li>Chef</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container bottom">
+    <span>© Mise En Prise · concept demo · 2026</span>
+    <span>Cook until it becomes instinct.</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const counter = document.getElementById('counter');
+  let n = 47;
+  setInterval(() => {
+    n = n - 1;
+    if (n < 23) n = 47;
+    counter.firstChild.textContent = n;
+  }, 4000);
+</script>
+
+</body>
+</html>
